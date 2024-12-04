@@ -1,4 +1,4 @@
-import { IPokemon } from './IPokemon'
+import { IPokemon } from './IPokemon.ts'
 
 export enum PokemonType {
   Fire = 'Fire',
@@ -9,6 +9,7 @@ export enum PokemonType {
 }
 export class Pokemon implements IPokemon {
   public attack: number
+  public id: `${PokemonType}-${Pokemon['name']}`
 
   constructor(
     public name: string,
@@ -16,11 +17,12 @@ export class Pokemon implements IPokemon {
     public speed: number,
     public hp: number,
   ) {
+    this.id = `${type}-${name}-${crypto.randomUUID()}`
     this.attack = Math.floor(Math.random() * 100)
   }
 
   toString() {
-    return `${this.name} (${this.type}, ${this.hp}hp, ${this.attack}atk, ${this.speed}spd)`
+    return `#${this.id} ${this.name} (${this.type}, ${this.hp}hp, ${this.attack}atk, ${this.speed}spd)`
   }
 
   isAlive() {
