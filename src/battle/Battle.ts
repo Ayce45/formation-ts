@@ -18,6 +18,11 @@ export class Battle {
     this.pokemon2 = this.findPokemon(name2)
   }
 
+  /**
+   * Starts a fight between two Pokémon.
+   *
+   * @returns {BattleResult} The result of the battle.
+   */
   public fighting(): BattleResult {
     console.info('**** START ****')
     console.info(this.pokemon1)
@@ -77,6 +82,14 @@ export class Battle {
     return new Pokemon(pokemon.name, pokemon.type, pokemon.speed, pokemon.hp)
   }
 
+  /**
+   * Determines the first attacker.
+   *
+   * @param pokemon1
+   * @param pokemon2
+   * @returns {Pokemon} The first attacker.
+   * @private
+   */
   private firstAttacker(pokemon1: Pokemon, pokemon2: Pokemon): Pokemon {
     if (
       pokemon1.type === PokemonType.Electric &&
@@ -113,6 +126,13 @@ export class Battle {
     return pokemon1.speed > pokemon2.speed ? pokemon1 : pokemon2
   }
 
+  /**
+   * Attacks a Pokémon.
+   *
+   * @param pokemon1
+   * @param pokemon2
+   * @private
+   */
   private attackPokemon(pokemon1: Pokemon, pokemon2: Pokemon): void {
     if (
       pokemon1.type === PokemonType.Fire &&
@@ -125,6 +145,12 @@ export class Battle {
     }
   }
 
+  /**
+   * Logs a message.
+   *
+   * @param {string | Pokemon} log - The message to log.
+   * @private
+    */
   private log(log: string | Pokemon): void {
     if (log instanceof Pokemon) {
       log = log.toString()
