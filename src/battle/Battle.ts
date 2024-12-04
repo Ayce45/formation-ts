@@ -1,5 +1,5 @@
-import { pokemons } from '../const/pokemons'
-import { Pokemon, PokemonType } from '../pokemon/Pokemon'
+import { pokemons } from '../const/pokemons.ts'
+import { Pokemon, PokemonType } from '../pokemon/Pokemon.ts'
 
 export type BattleResult = {
   history: string[]
@@ -150,7 +150,7 @@ export class Battle {
    *
    * @param {string | Pokemon} log - The message to log.
    * @private
-    */
+   */
   private log(log: string | Pokemon): void {
     if (log instanceof Pokemon) {
       log = log.toString()

@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
-import { Battle, BattleResult } from './Battle'
+import { Battle, BattleResult } from './Battle.ts'
 
 describe('Battle test', () => {
   beforeEach(() => {
@@ -99,6 +99,21 @@ describe('Battle test', () => {
       })
 
       const result = new Battle('Pikachu', 'Raichu').fighting()
+      expect(
+        result.history.includes('Speed is equal, random first attacker'),
+      ).toBe(true)
+      expect(result.firstAttacker).toBe('Pikachu')
+      vi.spyOn(Math, 'random').mockClear()
+    })
+  })
+
+  describe('Pikachu vs Pikachu', () => {
+    test('should first attacker to be random', () => {
+      vi.spyOn(Math, 'random').mockImplementation(() => {
+        return 0.6
+      })
+
+      const result = new Battle('Pikachu', 'Pikachu').fighting()
       expect(
         result.history.includes('Speed is equal, random first attacker'),
       ).toBe(true)
