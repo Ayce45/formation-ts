@@ -1,6 +1,7 @@
-import { PokemonType } from '../pokemon/Pokemon.ts'
+import { Pokemon } from '../pokemon/Pokemon.ts'
+import { PokemonType } from '../pokemon/PokemonType.js'
 
-export const pokemons = [
+export const pokemons: Pick<Pokemon, 'name' | 'type' | 'speed' | 'hp'>[] = [
   { name: 'Pikachu', type: PokemonType.Electric, speed: 20, hp: 999999 },
   { name: 'Raichu', type: PokemonType.Electric, speed: 20, hp: 300 },
   { name: 'Elector', type: PokemonType.Electric, speed: 1, hp: 400 },

@@ -1,5 +1,6 @@
 import { pokemons } from '../const/pokemons.ts'
-import { Pokemon, PokemonType } from '../pokemon/Pokemon.ts'
+import { Pokemon } from '../pokemon/Pokemon.ts'
+import { PokemonType } from '../pokemon/PokemonType.js'
 
 export type BattleResult = {
   history: string[]
@@ -13,6 +14,7 @@ export class Battle {
   private readonly pokemon1: Pokemon
   private readonly pokemon2: Pokemon
   private history: string[] = []
+
   constructor(name1: Pokemon['name'], name2: Pokemon['name']) {
     this.pokemon1 = this.findPokemon(name1)
     this.pokemon2 = this.findPokemon(name2)
@@ -21,45 +23,43 @@ export class Battle {
   /**
    * Starts a fight between two Pokémon.
    *
-   * @returns {BattleResult} The result of the battle.
+   * @returns {Promise<BattleResult>} The result of the battle.
    */
   public fighting(): BattleResult {
     console.info('**** START ****')
     console.info(this.pokemon1)
     console.info(this.pokemon2)
 
-    let turn: Pokemon['name']
+    let turn: Pokemon['id']
 
     const firstAttacker = this.firstAttacker(this.pokemon1, this.pokemon2)
-    turn = firstAttacker.name
-    console.info(`${firstAttacker.name} attacks first`)
+    turn = firstAttacker.id
+    console.info(`${firstAttacker.id} attacks first`)
 
     while (this.pokemon1.isAlive() && this.pokemon2.isAlive()) {
       console.info(`**** TURN OF ${turn} ****`)
 
-      const attacker =
-        turn === this.pokemon1.name ? this.pokemon1 : this.pokemon2
-      const defender =
-        turn === this.pokemon1.name ? this.pokemon2 : this.pokemon1
+    const attacker = turn === this.pokemon1.id ? this.pokemon1 : this.pokemon2
+    const defender = turn === this.pokemon1.id ? this.pokemon2 : this.pokemon1
 
-      this.attackPokemon(attacker, defender)
-      turn = defender.name
+    this.attackPokemon(attacker, defender)
+    turn = defender.id
 
-      this.log(
-        `${attacker.name} attacks ${defender.name} and hit with damage ${attacker.attack} (${defender.name} left ${defender.hp}hp)`,
-      )
+    this.log(
+      `${attacker.id} attacks ${defender.id} and hit with damage ${attacker.attack} (${defender.id} left ${defender.hp}hp)`,
+    )
     }
 
     console.info(`**** END ****`)
-    const winner: Pokemon['name'] = this.pokemon1.isAlive()
-      ? this.pokemon1.name
-      : this.pokemon2.name
-    this.log(`${winner} wins`)
+    const winner: Pokemon = this.pokemon1.isAlive()
+      ? this.pokemon1
+      : this.pokemon2
+    this.log(`${winner.id} wins`)
 
     return {
       history: this.history,
-      firstAttacker: firstAttacker.name,
-      winner,
+      firstAttacker: firstAttacker.id,
+      winner: winner.id,
       pokemon1: this.pokemon1,
       pokemon2: this.pokemon2,
     }
@@ -102,7 +102,7 @@ export class Battle {
 
       const first = pokemon1.speed > pokemon2.speed ? pokemon1 : pokemon2
       this.log(
-        `Pokemons is ${PokemonType.Electric} type and ${first.name} attacks first`,
+        `Pokemons is ${PokemonType.Electric} type and ${first.id} attacks first`,
       )
       return first
     }
@@ -113,7 +113,7 @@ export class Battle {
     ) {
       const first = pokemon1.type === PokemonType.Electric ? pokemon1 : pokemon2
       this.log(
-        `${first.name} attacks first because it is ${PokemonType.Electric} type`,
+        `${first.id} attacks first because it is ${PokemonType.Electric} type`,
       )
       return first
     }
@@ -133,30 +133,30 @@ export class Battle {
    * @param pokemon2
    * @private
    */
-  private attackPokemon(pokemon1: Pokemon, pokemon2: Pokemon): void {
-    if (
-      pokemon1.type === PokemonType.Fire &&
-      pokemon2.type === PokemonType.Plant
-    ) {
-      this.log(`${pokemon1.name} has boost`)
-      pokemon2.hp -= pokemon1.attack * 2
-    } else {
-      pokemon2.hp -= pokemon1.attack
-    }
+  private attackPokemon(pokemon1: Pokemon, pokemon2: Pokemon) {
+      if (
+        pokemon1.type === PokemonType.Fire &&
+        pokemon2.type === PokemonType.Plant
+      ) {
+        this.log(`${pokemon1.id} has boost`)
+        pokemon2.hp -= pokemon1.attack * 2
+      } else {
+        pokemon2.hp -= pokemon1.attack
+      }
   }
 
   /**
    * Logs a message.
    *
-   * @param {string | Pokemon} log - The message to log.
+   * @param {string | Pokemon} arg - The message to log.
    * @private
    */
-  private log(log: string | Pokemon): void {
-    if (log instanceof Pokemon) {
-      log = log.toString()
+  private log(arg: string | Pokemon): void {
+    if (arg instanceof Pokemon) {
+      arg = arg.toString()
     }
 
-    this.history.push(log)
-    console.info(log)
+    this.history.push(arg)
+    console.info(arg)
   }
 }

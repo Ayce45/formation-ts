@@ -17,11 +17,11 @@ describe('Battle test', () => {
     })
 
     test('should Pikachu is the first', () => {
-      expect(result.firstAttacker).toBe('Pikachu')
+      expect(result.firstAttacker).toBe(result.pokemon1.id)
     })
 
     test('Pikachu wins', () => {
-      expect(result.winner).toBe('Pikachu')
+      expect(result.winner).toBe(result.pokemon1.id)
     })
   })
 
@@ -32,11 +32,11 @@ describe('Battle test', () => {
     })
 
     test('should Pikachu is the first', () => {
-      expect(result.firstAttacker).toBe('Pikachu')
+      expect(result.firstAttacker).toBe(result.pokemon1.id)
     })
 
     test('Pikachu wins', () => {
-      expect(result.winner).toBe('Pikachu')
+      expect(result.winner).toBe(result.pokemon1.id)
     })
   })
 
@@ -54,7 +54,7 @@ describe('Battle test', () => {
     test('should Pikachu is the first', () => {
       const result = new Battle('Pikachu', 'Elector').fighting()
 
-      expect(result.firstAttacker).toBe('Pikachu')
+      expect(result.firstAttacker).toBe(result.pokemon1.id)
     })
   })
 
@@ -62,10 +62,10 @@ describe('Battle test', () => {
     test('should Elector is the first', () => {
       const result = new Battle('Elector', 'Bulbasaur').fighting()
 
-      expect(result.firstAttacker).toBe('Elector')
+      expect(result.firstAttacker).toBe(result.pokemon1.id)
       expect(
         result.history.includes(
-          'Elector attacks first because it is Electric type',
+          `${result.pokemon1.id} attacks first because it is Electric type`,
         ),
       ).toBe(true)
     })
@@ -75,10 +75,10 @@ describe('Battle test', () => {
     test('should Pikachu is the first', () => {
       const result = new Battle('Pikachu', 'Elector').fighting()
 
-      expect(result.firstAttacker).toBe('Pikachu')
+      expect(result.firstAttacker).toBe(result.pokemon1.id)
       expect(
         result.history.includes(
-          'Pokemons is Electric type and Pikachu attacks first',
+          `Pokemons is Electric type and ${result.pokemon1.id} attacks first`,
         ),
       ).toBe(true)
     })
@@ -88,7 +88,9 @@ describe('Battle test', () => {
     test('should Charmeleon has boost', () => {
       const result = new Battle('Charmeleon', 'Bulbasaur').fighting()
 
-      expect(result.history.includes('Charmeleon has boost')).toBe(true)
+      expect(result.history.includes(`${result.pokemon1.id} has boost`)).toBe(
+        true,
+      )
     })
   })
 
@@ -102,7 +104,7 @@ describe('Battle test', () => {
       expect(
         result.history.includes('Speed is equal, random first attacker'),
       ).toBe(true)
-      expect(result.firstAttacker).toBe('Pikachu')
+      expect(result.firstAttacker).toBe(result.pokemon1.id)
       vi.spyOn(Math, 'random').mockClear()
     })
   })
@@ -117,7 +119,7 @@ describe('Battle test', () => {
       expect(
         result.history.includes('Speed is equal, random first attacker'),
       ).toBe(true)
-      expect(result.firstAttacker).toBe('Pikachu')
+      expect(result.firstAttacker).toBe(result.pokemon1.id)
       vi.spyOn(Math, 'random').mockClear()
     })
   })
